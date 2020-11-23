@@ -56,3 +56,4 @@ endmacro()
 
 build_doc(indigo)
 build_doc(kinetic)
+build_doc(melodic)

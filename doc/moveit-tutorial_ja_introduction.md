@@ -52,9 +52,7 @@ MoveIt! Commander のプログラミングインタフェースには Python や
 - [クラス・関数リファレンス](moveit-tutorial_ja_reference-class-functions.md)
 - [Python チュートリアル](moveit-tutorial_ja_python.md)
 
-<$endif>
-
-<$ifeq <$ROS_DISTRO>|kinetic>
+<$else>
 
 - [はじめに（本章）](moveit-tutorial_ja_introduction.md)
 - [ロボットシミュレータを使う](moveit-tutorial_ja_robot-simulator.md)

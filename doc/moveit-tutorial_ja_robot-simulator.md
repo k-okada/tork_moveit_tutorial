@@ -21,6 +21,15 @@
 
 <$endif>
 
+<$ifeq <$ROS_DISTRO>|melodic>
+
+- NEXTAGE OPEN : 人型双腕ロボット
+- MINAS TRA1 : 単腕マニピュレータ（「ソースインストール」の章にて）
+- KHI duaro : スカラ型双腕ロボット（「ソースインストール」の章にて）
+- Baxter Research Robot : 人型双腕ロボット（「ワークスペースの作成」の章にて）
+
+<$endif>
+
 
 ## シミュレータの種類
 
@@ -36,9 +45,7 @@
   - NEXTAGE OPEN のみ
     - 動力学を含む物理シミュレータ
 
-<$endif>
-
-<$ifeq <$ROS_DISTRO>|kinetic>
+<$else>
 
 - ROS のシミュレータ
   - NEXTAGE OPEN / Baxter Research Robot / MINAS TRA1 / KHI duaro
@@ -81,9 +88,7 @@ NEXTAGE OPEN に加えて他のロボットのソフトウェアもインスト�
   - Baxter ソフトウェア
   - MINAS TRA1 ソフトウェア
 
-<$endif>
-
-<$ifeq <$ROS_DISTRO>|kinetic>
+<$else>
 
 - ROS とチュートリアルパッケージ
 - ロボットソフトウェア
@@ -109,11 +114,19 @@ NEXTAGE OPEN に加えて他のロボットのソフトウェアもインスト�
 
 <$endif>
 
+<$ifeq <$ROS_DISTRO>|melodic>
+
+- Ubuntu 18.04
+- ROS Melodic
+
+<$endif>
+
 > ROS は Ubuntu の各バージョンに対応したものがあります．
 > それぞれに対応した Ubuntu と ROS の組み合わせで利用する必要があります．
 > 
 >  Ubuntu バージョン | ROS バージョン | サポート終了
 >  --- | --- | ---
+>  20.04 (Focal)  | Noetic Ninjemys| 2025年5月
 >  18.04 (Bionic) | Melodic Morenia| 2023年5月
 >  16.04 (Xenial) | Kinetic Kame | 2021年4月
 >  14.04 (Trusty) | Indigo Igloo | 2019年4月
@@ -131,27 +144,12 @@ NEXTAGE OPEN に加えて他のロボットのソフトウェアもインスト�
 します．
 既に ROS がインストールされていれば，次のチュートリアルパッケージのインストールに進んでください．
 
-<$ifeq <$ROS_DISTRO>|indigo>
-
 ```
 $ sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
 $ sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
 $ sudo apt-get update
-$ sudo apt-get install ros-indigo-desktop-full
+$ sudo apt-get install ros-<$ROS_DISTRO>-desktop-full
 ```
-
-<$endif>
-
-<$ifeq <$ROS_DISTRO>|kinetic>
-
-```
-$ sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
-$ sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
-sudo apt-get update
-sudo apt-get install ros-kinetic-desktop-full
-```
-
-<$endif>
 
 rosdep の初期化を行います．
 
@@ -213,6 +211,11 @@ $ sudo apt-get install ros-<$ROS_DISTRO>-baxter-simulator
 
 <$endif>
 
+<$ifeq <$ROS_DISTRO>|melodic>
+
+[//]: # (minas is released on indigo/kineitc)
+
+<$else>
 
 ### MINAS TRA1 ソフトウェアのインストール
 
@@ -223,20 +226,20 @@ MINAS TRA1 のソフトウェアをインストールします．
 $ sudo apt-get update && sudo apt-get install ros-<$ROS_DISTRO>-minas
 ```
 
+<$endif>
 
 <$ifeq <$ROS_DISTRO>|kinetic>
 
 ### KHI duaro ソフトウェアのインストール
 
 ターミナルから次のコマンドを実行して
-MINAS TRA1 のソフトウェアをインストールします．
+KHI Duaro のソフトウェアをインストールします．
 
 ```
 $ sudo apt-get update && sudo apt-get install ros-<$ROS_DISTRO>-khi-duaro-gazebo ros-<$ROS_DISTRO>-khi-duaro-description ros-<$ROS_DISTRO>-khi-duaro-ikfast-plugin ros-<$ROS_DISTRO>-khi-duaro-moveit-config
 ```
 
 <$endif>
-
 
 ### インストールの最後に
 
@@ -259,6 +262,65 @@ $ echo "source /opt/ros/<$ROS_DISTRO>/setup.bash" >> ~/.bashrc
 .bashrc の設定ができていると以後のターミナルを起動するたびに行う
 `source /opt/ros/<$ROS_DISTRO>/setup.bash` は不要です．
 
+
+<$ifeq <$ROS_DISTRO>|melodic>
+
+## ソースインストール
+
+aptでインストールできるようにバイナリ／リリースされていないロボットパッケージはワークスペース経由でインストールすることができます．標準では推奨されていな方法ですので十分に注意して実行してください．
+
+まず，`/tmp/catkin_ws` という名前のワークスペースを作成する手順は次のとおりです．
+
+```
+$ source /opt/ros/<$ROS_DISTRO>/setup.bash
+$ mkdir -p /tmp/catkin_ws/src
+$ cd /tmp/catkin_ws/src
+$ catkin_init_workspace
+```
+
+### MINAS TRA1 ソフトウェアの取得とビルド
+
+次の手順で MINAS TRA1 のクローンと
+それに必要なソフトウェアパッケージの取得，ビルドを行います．
+
+```
+$ cd /tmp/catkin_ws/src
+$ git clone https://github.com/tork-a/minas.git
+$ rosdep install --from-path . --ignore-src -y
+$ cd /tmp/catkin_ws
+$ catkin_make
+```
+
+### KHI duaro ソフトウェアの取得とビルド
+
+次の手順で KHI Duaro のクローンと
+それに必要なソフトウェアパッケージの取得，ビルドを行います．
+
+```
+$ cd /tmp/catkin_ws/src
+$ git clone https://github.com/Kawasaki-Robotics/khi_robot.git
+$ rosdep install --from-path . --ignore-src -y
+$ cd /tmp/catkin_ws
+$ catkin_make
+```
+
+### ワークスペースでビルドしたソフトウェアのインストール
+
+ここまでの手順がエラー無く進んでいることを再度確認したら
+次の手順によりワークスペースでビルドしたパッケージを
+`/opt/ros/<$ROS_DISTRO>/`へとインストールします．
+
+繰り返しになりますが標準では推奨されない方法ですので
+もしここまでの手順でエラーが出ていれば作業を中止してください．
+
+```
+$ cd /tmp/catkin_ws
+$ sudo su
+$ source /opt/ros/<$ROS_DISTRO>/setup.bash
+$ catkin_make_isolated --install --install-space /opt/ros/<$ROS_DISTRO> -DCMAKE_BUILD_TYPE=Release
+```
+
+<$endif>
 
 ## シミュレータと MoveIt! の起動
 
@@ -287,9 +349,7 @@ $ rtmlaunch nextage_moveit_config nextage_demo.launch
 
 ![NextageROS_Demo - Starts](images/nextageros-demo_starts.png)
 
-<$endif>
-
-<$ifeq <$ROS_DISTRO>|kinetic>
+<$else>
 
 ![NextageROS_Demo - Starts](images/kinetic/nextage_moveit-demo_starts.png)
 
@@ -333,9 +393,7 @@ NEXTAGE OPEN ロボットの準備が完了しています．
 
 ![NEXTAGE - Gazebo Starts](images/nextage_gazebo-starts.png)
 
-<$endif>
-
-<$ifeq <$ROS_DISTRO>|kinetic>
+<$else>
 
 ![NEXTAGE - Gazebo Starts](images/kinetic/nextage_gazebo-starts.png)
 
@@ -360,9 +418,7 @@ $ roslaunch nextage_moveit_config moveit_planning_execution.launch
 
 ![NEXTAGE - MoveIt! Starts](images/nextage_moveit-starts.png)
 
-<$endif>
-
-<$ifeq <$ROS_DISTRO>|kinetic>
+<$else>
 
 ![NEXTAGE - MoveIt! Starts](images/kinetic/nextage_moveit-starts.png)
 
@@ -453,7 +509,6 @@ $ roslaunch baxter_moveit_config baxter_grippers.launch
 
 <$endif>
 
-
 ### MINAS TRA1 - MoveIt! シミュレータ
 
 ターミナルを2つ起動します．
@@ -478,9 +533,7 @@ $ roslaunch tra1_bringup tra1_moveit.launch
 
 ![MINAS TRA1 - MoveIt! Starts](images/minas-tra1_moveit_starts.png)
 
-<$endif>
-
-<$ifeq <$ROS_DISTRO>|kinetic>
+<$else>
 
 ![MINAS TRA1 - MoveIt! Starts](images/kinetic/minas-tra1_moveit_starts.png)
 
@@ -488,8 +541,11 @@ $ roslaunch tra1_bringup tra1_moveit.launch
 
 シミュレータを終了するには各ターミナルで Ctrl-C を入力してください．
 
+<$ifeq <$ROS_DISTRO>|indigo>
 
-<$ifeq <$ROS_DISTRO>|kinetic>
+[//]: # (duaro is released on kineitc, source installed in melodic)
+
+<$else>
 
 ### KHI duaro - Gazebo シミュレータ
 
@@ -564,9 +620,7 @@ MoveIt! が動作計画を行い，シミュレータのロボットが動作し
 
 ![MoveIt! - RViz Plan and Execute](images/nextage_moveit_plan-execute.png)
 
-<$endif>
-
-<$ifeq <$ROS_DISTRO>|kinetic>
+<$else>
 
 ![MoveIt! - RViz Plan and Execute](images/kinetic/nextage_moveit_plan-execute.png)
 
@@ -575,6 +629,5 @@ MoveIt! が動作計画を行い，シミュレータのロボットが動作し
 このように MoveIt! の GUI 上で
 InteractiveMarker を動かして目標値を設定し，動作計画を行い実行する
 という操作は基本的にどのロボットでも共通です．
-
 
 <!-- EOF -->

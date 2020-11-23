@@ -324,9 +324,7 @@ if __name__ == '__main__':
 「右腕」を動かしていました．
 これらのロボットは双腕ですから「右腕」だけでなく「左腕」や「両腕」を動かすこともできます．
 
-<$endif>
-
-<$ifeq <$ROS_DISTRO>|kinetic>
+<$else>
 
 これまで NEXTAGE OPEN や duaro の動作プログラムの例では
 NEXTAGE OPEN では「右腕」( right_arm ) を，
@@ -479,9 +477,7 @@ group = MoveGroupCommander("botharms")
 group = MoveGroupCommander("both_arms")
 ```
 
-<$endif>
-
-<$ifeq <$ROS_DISTRO>|kinetic>
+<$else>
 
 両腕のグループの名称は NEXTAGE OPEN と KHI duaro は同じ `botharms` です．
 他のロボットではこの名称は異なっている場合もあるのでロボットごとに名称を確認して適切な名称を指定します．
@@ -653,9 +649,7 @@ if __name__ == '__main__':
 
 ![Nextage - Gazebo / Poses Relative](images/nextage_gazebo_poses_relative.png)
 
-<$endif>
-
-<$ifeq <$ROS_DISTRO>|kinetic>
+<$else>
 
 ![Nextage - Gazebo / Poses Relative](images/kinetic/nextage_gazebo_poses_relative.png)
 
@@ -665,9 +659,7 @@ if __name__ == '__main__':
 
 ![Nextage - MoveIt! / Poses Relative](images/nextage_moveit_poses_relative.png)
 
-<$endif>
-
-<$ifeq <$ROS_DISTRO>|kinetic>
+<$else>
 
 ![Nextage - MoveIt! / Poses Relative](images/kinetic/nextage_moveit_poses_relative.png)
 
@@ -957,9 +949,7 @@ $ roslaunch nextage_ros_bridge ar_headcamera.launch sim:=true
 
 ![Nextage - Gazebo / AR Marker Preparation](images/nextage_gazebo_armarker_prepare.png)
 
-<$endif>
-
-<$ifeq <$ROS_DISTRO>|kinetic>
+<$else>
 
 ![Nextage - Gazebo / AR Marker Preparation](images/kinetic/nextage_gazebo_armarker_prepare.png)
 
@@ -982,9 +972,7 @@ RViz の設定ファイルを読み込みます．
 
 ![MoveIt! - Open Config](images/nextage_moveit_openconfig.png)
 
-<$endif>
-
-<$ifeq <$ROS_DISTRO>|kinetic>
+<$else>
 
 ![MoveIt! - Open Config](images/kinetic/nextage_moveit_openconfig.png)
 
@@ -997,9 +985,7 @@ RViz の設定ファイルを読み込みます．
 
 ![MoveIt! - Choose moveit_armarker.rviz](images/nextage_moveit_openconfig_armarker.png)
 
-<$endif>
-
-<$ifeq <$ROS_DISTRO>|kinetic>
+<$else>
 
 ![MoveIt! - Choose moveit_armarker.rviz](images/kinetic/nextage_moveit_openconfig_armarker.png)
 
@@ -1011,9 +997,7 @@ RViz の設定ファイルを読み込みます．
 
 ![Nextage - MoveIt! / AR Marker Config Prepared](images/nextage_moveit_armarker_prepare.png)
 
-<$endif>
-
-<$ifeq <$ROS_DISTRO>|kinetic>
+<$else>
 
 ![Nextage - MoveIt! / AR Marker Config Prepared](images/kinetic/nextage_moveit_armarker_prepare.png)
 
@@ -1034,9 +1018,7 @@ $ rosrun tork_moveit_tutorial nextage_moveit_tutorial_poses_ar.py
 
 ![Nextage - Gazebo / AR Marker Done](images/nextage_gazebo_armarker_done.png)
 
-<$endif>
-
-<$ifeq <$ROS_DISTRO>|kinetic>
+<$else>
 
 ![Nextage - Gazebo / AR Marker Done](images/kinetic/nextage_gazebo_armarker_done.png)
 
@@ -1046,9 +1028,7 @@ $ rosrun tork_moveit_tutorial nextage_moveit_tutorial_poses_ar.py
 
 ![Nextage - MoveIt! / AR Marker Done](images/nextage_moveit_armarker_done.png)
 
-<$endif>
-
-<$ifeq <$ROS_DISTRO>|kinetic>
+<$else>
 
 ![Nextage - MoveIt! / AR Marker Done](images/kinetic/nextage_moveit_armarker_done.png)
 
@@ -1208,9 +1188,7 @@ MoveIt! が自動で障害物を回避する動作計画を作成します．
 
 ![MoveIt! - Add Object and Plan](images/nextage_moveit_add-object_plan.png)
 
-<$endif>
-
-<$ifeq <$ROS_DISTRO>|kinetic>
+<$else>
 
 ![MoveIt! - Add Object and Plan](images/kinetic/nextage_moveit_add-object_plan.png)
 
